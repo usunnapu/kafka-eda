@@ -1,0 +1,15 @@
+- name: Listen for newly added ConfigMap resources
+  hosts: all
+  sources:
+    - ansible.eda.kafka:
+        host: my-cluster-kafka-bootstrap
+        port: 9092
+        topic: my-topic
+        group_id: ansible-eda
+  rules:
+    - name: kafka
+      condition: event.message != ""
+      action:
+        run_job_template:
+          name: kafka-ndcmgmt-cluster
+          organization: Default
